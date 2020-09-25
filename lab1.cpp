@@ -1,11 +1,7 @@
 #include <iostream>
 #include <algorithm>
 using namespace std;
-//Phone: Фамилия, Имя, Отчество, Адрес, Номер, Время внутри-городских разговоров,
-//Время междугородних разговоров. Создать массив объектов. Вывести:
-//а) сведения об абонентах, время внутригородских разговоров кото-рых превышает заданное;
-//b) сведения об абонентах, воспользовавшихся междугородней свя-зью;
-//c) сведения об абонентах, выведенные в алфавитном порядке.
+//var14
 struct adres
 {
 	char str[50];
@@ -30,30 +26,30 @@ public:
 };
 Phone::Phone()
 {
-	cout<<"Введите ФИО:";
+	cout<<"Input SFO:";
 	cin >> second_name;
 	cin >> first_name;
 	cin >> otch;
-	cout<<"Введите адрес";
+	cout<<"Input address:";
 	cin >> adr.str >> adr.h;
-	cout<<"Введите номер";
+	cout<<"Input number:";
 	cin >> number;
-	cout<<"Введите время внутри-городских разговоров";
+	cout<<"Input time of intra-city calls:";
 	cin >> time_in;
-	cout<<"Введите Время междугородних разговоров";
+	cout<<"Input time of long distance calls:";
 	cin >> time_out;
 }
 void Phone::show()
 {
-	cout<<"ФИО: "<< second_name <<" "<< first_name <<" "<< otch<<endl;
-	cout<<"Адрес: "<< adr.str <<" "<<adr.h<<endl;
-	cout<<"Номер"<< number<<endl<<endl;
+	cout<<"SFO: "<< second_name <<" "<< first_name <<" "<< otch<<endl;
+	cout<<"address: "<< adr.str <<" "<<adr.h<<endl;
+	cout<<"Number: "<< number<<endl<<endl;
 }
 int Phone::in(){return time_in;}
 int Phone::out(){return time_out;}
 void spisk_a(Phone spisp[],int &n,int &k)
 {
-	cout<<"Список а"<<endl;
+	cout<<"List a"<<endl;
 	for (int i = 0; i < k; i++)
 	{
 		if (spisp[i].in > n)
@@ -65,7 +61,7 @@ void spisk_a(Phone spisp[],int &n,int &k)
 }
 void spisk_b(Phone spisp[],int &k)
 {
-	cout<<"Список b"<<endl;
+	cout<<"List b"<<endl;
 	for (int i = 0; i < k; i++)
 	{
 		if (spisp[i].out > 0)
@@ -79,7 +75,7 @@ void spisk_c(Phone spisp[],int &k)
 {
 	Phone remember;
 	int n;
-	cout<<"Список c"<<endl;
+	cout<<"List c"<<endl;
 	for (int i = 0; i < k; i++)
 	{
 		for (int j = 0; j < (k-1); j++)
@@ -105,10 +101,10 @@ int main()
 { 
 	Phone *spisp;
 	int n,k;
-	cout<<"Предел времени внутригородских разговоров: ";
+	cout<<"Time limit for intracity calls: ";
 	cin>>n;
 	cout<<endl;
-	cout<<"Введите количество абонентов: ";
+	cout<<"Input number of subscribers: ";
 	cin>>k;
 	spisp=new Phone[k];
 	spisk_a(spisp,n,k);
@@ -116,7 +112,7 @@ int main()
 	spisk_c(spisp,k);
 	delete [] spisp;
 	cout<<endl;
-	setlocale(LC_ALL, "Russian");
+
 	system("Pause");
 	return 0;
 }
