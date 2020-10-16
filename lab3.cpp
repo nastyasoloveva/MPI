@@ -62,7 +62,7 @@ int main() {
     cout << "Enter the 1-st array:\n";
     for (int i = 0; i < n; i++) {
         cin >> val;
-        s1.push(val); //Добавляем элементы в первый стек
+        s1.push(val); 
     }
     cout << "Enter the 2-nd array size:\n";
     cout << "m = ";
@@ -70,7 +70,7 @@ int main() {
     cout << "Enter the 2-nd array:\n";
     for (int i = 0; i < m; i++) {
         cin >> val;
-        s2.push(val); //Добавляем элементы во второй стек
+        s2.push(val); 
     }
     
     while ((s1.s() > 0) || (s2.s() > 0)) {
