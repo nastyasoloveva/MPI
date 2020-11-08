@@ -1,0 +1,109 @@
+﻿﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Лаб2</title>
+    
+</head>
+<body>  
+<script >
+let body = document.querySelector('body');
+
+let module = (function() {
+
+let Students = [
+  {
+      name: "Anna",
+      surname: "Koroleva",
+      age: 18,
+      avg: 7
+  }, 
+  {
+    name: "Ivan",
+    surname: "Dorogka",
+    age: 19,
+    avg: 8
+  },
+  {
+    name: "Darina",
+    surname: "Romanova",
+    age: 17,
+    avg: 10
+  },
+  
+  
+] 
+
+function getField(i, j) { 
+  return Object.values(Students[i])[j];
+}
+
+let fName = Object.keys(Students[0]);
+return{
+    printTable : function(){
+
+        let table = body.appendChild(document.createElement('table'));
+        
+        let tr = document.createElement('tr');
+        table.appendChild(tr);
+
+        for(let i = -1; i < Students.length; i++){
+          
+          let tr = document.createElement('tr');
+          table.appendChild(tr);
+
+          if (i == -1){
+
+            for (let j = 0; j < fName.length; j++) {
+
+              let th = document.createElement('th');
+              tr.appendChild(th);
+              th.innerText = fdName[j];
+            }
+          }
+
+          else{
+            for (let j = 0; j < fName.length; j++) {
+            
+              let td = document.createElement('td');
+              tr.appendChild(td);
+
+              if (fName[j] == 'avg') {
+
+                  td.className = 'avg';
+            }
+
+            td.innerText = getField(i, j);
+            }
+          }
+        }
+
+    },
+    avg : function() {
+
+      let sum = 0;
+      let markArr = document.querySelectorAll('.avg');
+      
+      for (let i = 0; i < markArr.length; i++) {
+
+          let mark = +markArr[i].innerText;
+          sum = sum + mark;
+      }
+
+      let result = sum / Students.length;
+
+      return result.toFixed(2);
+    }
+  }
+
+}())
+
+
+module.printTable();
+
+let h30 = document.createElement('h3');
+let h3 = body.appendChild(h30);
+h3.innerText = "\nСредний балл: " + module.avg();
+</script> 
+</body>
+</html>
