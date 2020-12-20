@@ -1,0 +1,210 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta charset="utf-8">
+	<title>Лаб4</title>
+	</head>
+	<body>
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>	
+	<script>
+		$.ajax({ 
+		   	url: "4.json", 
+		   	dataType: "json", 
+		   	method: "GET",    
+		   	data: {},
+		    success: function(data) {
+		 		if(data.length) {
+			 		let nameTable = $("<td></td>").text("Имя");
+					let surnameTable = $("<td></td>").text("Фамилия");
+					let ageTable = $("<td></td>").text("Возраст");
+					let avgMarkTable = $("<td></td>").text("Средний балл");
+
+					$("body").append($("<table></table>").attr("border", "2").attr("id", "table").append($("<tr></tr>").append(nameTable, surnameTable, ageTable, avgMarkTable)));
+
+					for (let i = 0; i < data.length; i++){ 					
+						let cellName = $("<td></td>").text(data[i]["name"]);
+						let cellSurname = $("<td></td>").text(data[i]["surname"]);
+						let cellAge = $("<td></td>").text(data[i]["age"]);
+						let cellAvgMark = $("<td></td>").text(data[i]["avgMark"]).attr("name", "avg" + i);
+						let editButton = $("<button></button>").attr("onclick", "tableModule.editRow(this)").attr("name", "e" + i).text("Редактировать");
+						let deleteButton = $("<button></button>").attr("onclick", "tableModule.deleteRow(this)").attr("name", "d" + i).text("Удалить");
+											
+						$("table").append($("<tr></tr>").attr("id", i).append(cellName, cellSurname, cellAge, cellAvgMark, editButton, deleteButton));
+					}
+				}
+			}
+		});
+
+		let name = $("<p></p>").text("Имя: ").append($("<input>").attr("type", "text").attr("id", "name"));
+		let surname = $("<p></p>").text("Фамилия: ").append($("<input>").attr("type", "text").attr("id", "surname"));
+		let age = $("<p></p>").text("Возраст: ").append($("<input>").attr("type", "number").attr("id", "age"));
+		let avgMark = $("<p></p>").text("Средний балл: ").append($("<input>").attr("type", "number").attr("id", "avgMark"));
+		let buttonAdd = $("<button></button>").text("Добавить").attr("onclick", "tableModule.addStudentAndCreateTable()");
+		let buttonAvgMark = $("<button></button>").text("Узнать средний балл всех студентов").attr("onclick", "tableModule.countAvgMark()");
+		
+		$("body").append(name, surname, age, avgMark, buttonAdd, buttonAvgMark);	
+	
+		let tableModule = (function() {
+			function addStudentAndCreateTable(array = []){
+				if(array.length) {
+					$("table").empty();
+
+					let nameTable = $("<td></td>").text("Имя");
+					let surnameTable = $("<td></td>").text("Фамилия");
+					let ageTable = $("<td></td>").text("Возраст");
+					let avgMarkTable = $("<td></td>").text("Средний балл");
+
+					($("table").attr("border", "2").attr("id", "table").append($("<tr></tr>").append(nameTable, surnameTable, ageTable, avgMarkTable)));
+
+					for (let i = 0; i < array.length; i++){ 					
+						let cellName = $("<td></td>").text(array[i]["name"]);
+						let cellSurname = $("<td></td>").text(array[i]["surname"]);
+						let cellAge = $("<td></td>").text(array[i]["age"]);
+						let cellAvgMark = $("<td></td>").text(array[i]["avgMark"]).attr("name", "avg" + i);
+						let editButton = $("<button></button>").attr("onclick", "tableModule.editRow(this)").attr("name", "e" + i).text("Редактировать");
+						let deleteButton = $("<button></button>").attr("onclick", "tableModule.deleteRow(this)").attr("name", "d" + i).text("Удалить");
+												
+						$("table").append($("<tr></tr>").attr("id", i).append(cellName, cellSurname, cellAge, cellAvgMark, editButton, deleteButton));
+					}
+				} else {
+					let array = [];			
+					
+					for (let i = 0; i <= +$("table tr:last-child").attr("id"); i++){
+						let student = {
+							"name": $("tr:eq(" + (i + 1) +") td:eq(0)").text(),
+							"surname": $("tr:eq(" + (i + 1) +") td:eq(1)").text(),
+							"age": $("tr:eq(" + (i + 1) +") td:eq(2)").text(),
+							"avgMark": $("tr:eq(" + (i + 1) +") td:eq(3)").text()
+						}
+					array.push(student);
+					}	
+
+					let student = {
+						"name": $("#name").val(),
+						"surname": $("#surname").val(),
+						"age": $("#age").val(),
+						"avgMark": $("#avgMark").val()
+					};
+					array.push(student);
+
+					$("table").empty();
+
+					let nameTable = $("<td></td>").text("Имя");
+					let surnameTable = $("<td></td>").text("Фамилия");
+					let ageTable = $("<td></td>").text("Возраст");
+					let avgMarkTable = $("<td></td>").text("Средний балл");
+
+					($("table").attr("border", "2").attr("id", "table").append($("<tr></tr>").append(nameTable, surnameTable, ageTable, avgMarkTable)));
+
+					for (let i = 0; i < array.length; i++){ 					
+						let cellName = $("<td></td>").text(array[i]["name"]);
+						let cellSurname = $("<td></td>").text(array[i]["surname"]);
+						let cellAge = $("<td></td>").text(array[i]["age"]);
+						let cellAvgMark = $("<td></td>").text(array[i]["avgMark"]).attr("name", "avg" + i);
+						let editButton = $("<button></button>").attr("onclick", "tableModule.editRow(this)").attr("name", "e" + i).text("Редактировать");
+						let deleteButton = $("<button></button>").attr("onclick", "tableModule.deleteRow(this)").attr("name", "d" + i).text("Удалить");
+												
+						$("table").append($("<tr></tr>").attr("id", i).append(cellName, cellSurname, cellAge, cellAvgMark, editButton, deleteButton));
+					}
+				}
+			}
+
+			function countAvgMark(){
+				let array = [];			
+				for (let i = 0; i <= +$("table tr:last-child").attr("id"); i++){
+					let student = {
+						"name": $("tr:eq(" + (i + 1) +") td:eq(0)").text(),
+						"surname": $("tr:eq(" + (i + 1) +") td:eq(1)").text(),
+						"age": +$("tr:eq(" + (i + 1) +") td:eq(2)").text(),
+						"avgMark": +$("tr:eq(" + (i + 1) +") td:eq(3)").text()
+					}
+					array.push(student);
+				}	
+
+				if(!array.length){
+					alert("Таблица пуста");
+				} else {	
+					let num = array.length;
+					let sum = 0;
+					for (let i = 0; i < num; i++){
+						sum += +$('td[name = "avg' + i + '"]').text();
+					}
+					alert(`Средний балл всех студентов: ${(sum / num).toFixed(1)}`);
+				}				
+			}
+			
+
+			function editRow(obj){
+				let array = [];	
+				for (let i = 0; i <= +$("table tr:last-child").attr("id"); i++){
+					let student = {
+						"name": $("tr:eq(" + (i + 1) +") td:eq(0)").text(),
+						"surname": $("tr:eq(" + (i + 1) +") td:eq(1)").text(),
+						"age": $("tr:eq(" + (i + 1) +") td:eq(2)").text(),
+						"avgMark": $("tr:eq(" + (i + 1) +") td:eq(3)").text()
+					}
+					array.push(student);
+				}
+
+				idEditElement = +obj.name.slice(1);
+				let editElement = array[idEditElement];
+									
+				editElement["name"] = prompt("Редактировать поле Имя:", editElement["name"]);
+				editElement["surname"] = prompt("Редактировать поле Фамилия:", editElement["surname"]);
+				editElement["age"] = +prompt("Редактировать поле Возраст:", editElement["age"]);
+				editElement["avgMark"] = +prompt("Редактировать поле Средний балл:", editElement["avgMark"]);
+				array[idEditElement] = editElement
+
+				addStudentAndCreateTable(array);					
+			}
+
+			function deleteRow(obj){
+				let array = [];	
+				for (let i = 0; i <= +$("table tr:last-child").attr("id"); i++){
+					let student = {
+						"name": $("tr:eq(" + (i + 1) +") td:eq(0)").text(),
+						"surname": $("tr:eq(" + (i + 1) +") td:eq(1)").text(),
+						"age": $("tr:eq(" + (i + 1) +") td:eq(2)").text(),
+						"avgMark": $("tr:eq(" + (i + 1) +") td:eq(3)").text()
+					}
+					array.push(student);
+				}
+
+				if(array.length == 1) {
+					$("table").empty();
+					$("table").attr("border", "0");
+					return;
+				}
+
+				let deleteIndex;
+				
+				for (let i = 0; i <= array.length; i++){
+					if ("d" + i == obj.name){
+						deleteIndex = i;
+						break;
+					}
+				}
+				
+				let newArray = [];
+
+				for (let i = 0; i < array.length; i++){
+					if (i == deleteIndex) continue;
+					newArray.push(array[i]);
+				}
+
+				array = newArray;
+
+				addStudentAndCreateTable(array);
+			}
+
+			return {
+				addStudentAndCreateTable: addStudentAndCreateTable,
+				countAvgMark: countAvgMark,
+				editRow: editRow,
+				deleteRow: deleteRow
+			}
+		})();
+	</script>
+	</body>
+</html>
