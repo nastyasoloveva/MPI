@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta charset="utf-8">
+	<title>Лаб3</title>
+	</head>
+	<body id="body">
+	<p>Имя: <input type="text" id="name"></p>
+	<p>Фамилия: <input type="text" id="surname"></p>
+	<p>Возраст: <input type="number" id="age"></p>
+	<p>Балл студента: <input type="number" id="mark"></p>
+	<button onclick="tableModule.addStudentAndCreateTable()">Добавить</button>
+	<button onclick="tableModule.countmark()">Узнать средний балл всех студентов</button>
+
+	<script>
+		let tableModule = (function() {
+			let array = [];
+
+			function addStudentAndCreateTable(delStudent = false) {
+				if (!delStudent){
+					let student = {
+						"name": document.querySelector('#name').value,
+						"surname": document.querySelector('#surname').value,
+						"age": document.querySelector('#age').value,
+						"mark": document.querySelector('#mark').value
+					};
+					array.push(student);
+				}
+
+				if (!array.length && delStudent) {
+					let table = document.getElementById("table");
+					table.parentNode.removeChild(table);
+				} else {
+					let table = document.getElementById("table");
+					if (table != null) table.parentNode.removeChild(table);
+					let body = document.getElementById("body");
+
+					table = document.createElement("table");
+					let data = document.createElement("tr");
+					let name = document.createElement("td");
+					let surname = document.createElement("td");
+					let age = document.createElement("td");
+					let mark = document.createElement("td");
+
+					name.appendChild(document.createTextNode("Имя"));
+					surname.appendChild(document.createTextNode("Фамилия"));
+					age.appendChild(document.createTextNode("Возраст"));
+					mark.appendChild(document.createTextNode("Балл"));
+
+					data.appendChild(name);
+					data.appendChild(surname);
+					data.appendChild(age);
+					data.appendChild(mark);
+
+					table.appendChild(data);
+
+					for (let i = 0; i < array.length; i++){ 
+						let row = document.createElement("tr");
+						row.setAttribute("id", i);
+						let cellName = document.createElement("td");
+						let cellSurname = document.createElement("td");
+						let cellAge = document.createElement("td");
+						let cellmark = document.createElement("td");
+						cellmark.setAttribute("name", "avg" + i)
+
+						cellName.appendChild(document.createTextNode(array[i]["name"]));
+						cellSurname.appendChild(document.createTextNode(array[i]["surname"]));
+						cellAge.appendChild(document.createTextNode(array[i]["age"]));
+						cellmark.appendChild(document.createTextNode(array[i]["mark"]));
+						
+						row.appendChild(cellName);
+						row.appendChild(cellSurname);
+						row.appendChild(cellAge);
+						row.appendChild(cellmark);
+
+
+						let editButton = document.createElement("button");
+						let deleteButton = document.createElement("button");
+						editButton.appendChild(document.createTextNode("Редактировать"));
+						deleteButton.appendChild(document.createTextNode("Удалить"));
+						editButton.setAttribute("name", "e" + i);
+						editButton.setAttribute("onclick", "tableModule.editRow(this)");
+						deleteButton.setAttribute("name", "d" + i);
+						deleteButton.setAttribute("onclick", "tableModule.deleteRow(this)");
+						row.appendChild(editButton);
+						row.appendChild(deleteButton);
+						
+						table.appendChild(row);
+					}
+
+					body.appendChild(table);
+					table.setAttribute("border", "2");
+					table.setAttribute("id", "table");
+				}
+			}
+
+			function countmark(){
+				if(!document.getElementById("table")){
+					alert("Таблица пуста");
+				} else {	
+					let num = +document.getElementById("table").lastChild.id;
+					let sum = 0;
+					for (let i = 0; i <= num; i++){
+						sum += +document.getElementsByName("avg" + i)[0].innerHTML;
+					}
+					alert(`Средний балл всех студентов: ${(sum / (num + 1)).toFixed(1)}`);
+				}
+			}
+
+			function editRow(obj){
+				idEditElement = +obj.name.slice(1);
+				let editElement = array[idEditElement];
+				
+				editElement["name"] = prompt("Редактировать поле Имя:", editElement["name"]);
+				editElement["surname"] = prompt("Редактировать поле Фамилия:", editElement["surname"]);
+				editElement["age"] = +prompt("Редактировать поле Возраст:", editElement["age"]);
+				editElement["mark"] = +prompt("Редактировать поле Средний балл:", editElement["mark"]);
+				array[idEditElement] = editElement
+
+				addStudentAndCreateTable(true);
+			}
+
+			function deleteRow(obj){
+				let deleteIndex;
+				for (let i = 0; i <= array.length; i++){
+					if ("d" + i == obj.name){
+						deleteIndex = i;
+						break;
+					}
+				}
+				let newArray = [];
+
+				for (let i = 0; i < array.length; i++){
+					if (i == deleteIndex) continue;
+					newArray.push(array[i]);
+				}
+
+				array = newArray;
+
+				addStudentAndCreateTable(true);
+			}
+
+			return {
+				addStudentAndCreateTable: addStudentAndCreateTable,
+				countmark: countmark,
+				editRow: editRow,
+				deleteRow: deleteRow
+			}
+		})();
+	</script>
+	</body>
+</html>
